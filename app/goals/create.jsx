@@ -1,12 +1,22 @@
 import { useState } from 'react'
 import { StyleSheet, Text, TextInput, Pressable } from 'react-native'
 import { SafeAreaView } from 'react-native-safe-area-context'
+import { useGoals } from '../../hooks/useGoals'
+import { useRouter } from 'expo-router'
 
 const Create = () => {
-  const [goal, setGoal] = useState('')
+  const [goals, setGoal] = useState('') 
+  const { createGoal } = useGoals()
+  const router = useRouter
   
   const handleSubmit = async () => {
-
+    await createGoal({
+      goals,
+      progress:0
+    })
+    setGoal('')
+    Keyboard.dismiss()
+    router.push('/goals')
   }
 
   return (
@@ -16,7 +26,7 @@ const Create = () => {
       <TextInput
         style={styles.input}
         placeholder="What do you want to do?"
-        value={goal}
+        value={goals}
         onChangeText={setGoal}
       />
 
